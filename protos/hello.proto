@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+package hello_word;
+
+option go_package="gitlab.com/proto/test;proto";
+
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+    info : {
+      title : "Hello Proto"
+      contact : {
+        name:  "Support"
+        url:   "https://support.host.local"
+        email: "support@host.local"
+      }
+    }
+};
+
+service HelloService {
+    rpc SayHello (HelloRequest) returns (HelloReply) {
+        option (google.api.http) = {
+            post: "/v1/sayHello"
+            body: "*"
+        };
+        option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+            description: "Returns a hello message",
+            summary: "Say hello",
+        };
+    }
+}
+
+message HelloRequest {
+    string name = 1;
+}
+
+message HelloReply {
+    string message = 1;
+}
